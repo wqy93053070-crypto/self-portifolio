@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Megan Wang | Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ========== SECTION: reset ========== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#faf6f1;
+  --bg2:#f5efe8;
+  --bg-card:#ffffff;
+  --bg-card-hover:#fffdf9;
+  --text:#2c2416;
+  --text-secondary:#6b5d4f;
+  --text-muted:#9a8b7a;
+  --accent:#c17f59;
+  --accent2:#8b6f47;
+  --accent3:#d4956b;
+  --warm:#e8a87c;
+  --gold:#d4a24e;
+  --border:rgba(139,111,71,.12);
+  --shadow:rgba(139,111,71,.08);
+  --font-sans:'Inter',system-ui,-apple-system,sans-serif;
+  --font-display:'Playfair Display',Georgia,serif;
+  --nav-h:64px;
+  --radius:16px;
+}
+html{overflow-x:hidden}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* ========== SECTION: scrollbar ========== */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+
+/* ========== SECTION: nav ========== */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;background:rgba(250,246,241,.9);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);transition:all .3s;
+}
+.nav.scrolled{background:rgba(250,246,241,.97);box-shadow:0 2px 20px var(--shadow)}
+.nav-brand{font-family:var(--font-display);font-size:1.3rem;font-weight:600;color:var(--accent2)}
+.nav-brand span{color:var(--accent)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{font-size:.82rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--text-secondary);transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent);transition:width .3s}
+.nav-links a:hover{color:var(--accent2)}
+.nav-links a:hover::after{width:100%}
+.lang-switch{display:flex;gap:4px;margin-left:12px;padding-left:12px;border-left:1px solid var(--border)}
+.lang-btn{font-size:.72rem;padding:4px 10px;border-radius:6px;font-weight:600;color:var(--text-muted);transition:all .3s}
+.lang-btn.active{background:var(--accent);color:#fff}
+.lang-btn:hover{color:var(--accent2)}
+.nav-toggle{display:none;flex-direction:column;gap:5px;width:28px;cursor:pointer}
+.nav-toggle span{height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+
+/* ========== SECTION: hero ========== */
+.hero{
+  min-height:100vh;display:flex;align-items:center;padding:var(--nav-h) 40px 0;
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#faf6f1 0%,#f5ece0 50%,#f0e4d4 100%);
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse at 70% 40%,rgba(193,127,89,.1),transparent 60%),
+             radial-gradient(ellipse at 30% 70%,rgba(212,149,107,.08),transparent 50%);
+}
+.hero-content{
+  position:relative;z-index:1;max-width:1200px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+}
+.hero-text{animation:fadeSlideUp .8s ease-out}
+.hero-greeting{font-size:.9rem;color:var(--accent);font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+.hero-name{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;line-height:1.1;margin-bottom:16px;color:var(--text)}
+.hero-name .cn{font-size:.5em;font-weight:400;color:var(--text-muted);margin-top:4px;display:block}
+.hero-title{font-size:1.1rem;color:var(--text-secondary);margin-bottom:28px;line-height:1.8}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:10px;font-size:.9rem;font-weight:600;transition:all .3s;letter-spacing:.3px}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 16px rgba(193,127,89,.25)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(193,127,89,.35);background:var(--accent2)}
+.btn-outline{border:1.5px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff;transform:translateY(-2px)}
+
+.hero-portrait{display:flex;justify-content:center;align-items:center;animation:fadeSlideUp .8s ease-out .2s both}
+.portrait-wrap{position:relative}
+.portrait-frame{
+  position:relative;width:300px;height:380px;border-radius:20px;overflow:hidden;
+  box-shadow:0 20px 50px rgba(139,111,71,.2);border:3px solid rgba(255,255,255,.6);
+}
+.portrait-frame img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.portrait-frame:hover img{transform:scale(1.03)}
+.portrait-deco{
+  position:absolute;inset:-8px;border-radius:26px;z-index:-1;
+  background:linear-gradient(135deg,var(--warm),var(--accent3),var(--gold));
+  opacity:.3;filter:blur(12px);
+}
+
+/* ========== SECTION: common ========== */
+.section{padding:100px 40px;position:relative}
+.section-header{text-align:center;margin-bottom:60px}
+.section-tag{font-size:.78rem;color:var(--accent);font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+.section-title{font-family:var(--font-display);font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:var(--text);margin-bottom:16px}
+.section-subtitle{color:var(--text-secondary);font-size:.95rem;max-width:600px;margin:0 auto;line-height:1.7}
+.container{max-width:1200px;margin:0 auto}
+
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity .7s ease-out,transform .7s ease-out}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in-left{opacity:0;transform:translateX(-40px);transition:opacity .7s ease-out,transform .7s ease-out}
+.fade-in-left.visible{opacity:1;transform:translateX(0)}
+.fade-in-right{opacity:0;transform:translateX(40px);transition:opacity .7s ease-out,transform .7s ease-out}
+.fade-in-right.visible{opacity:1;transform:translateX(0)}
+
+/* ========== SECTION: carousel ========== */
+.card-carousel{position:relative;overflow:hidden;cursor:pointer}
+.card-carousel .slides{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card-carousel .slide{min-width:100%;height:100%}
+.card-carousel .slide img{width:100%;height:100%;object-fit:contain;background:var(--bg2)}
+.carousel-dots{
+  position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;z-index:2;
+}
+.carousel-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.45);transition:all .3s;cursor:pointer}
+.carousel-dot.active{background:#fff;width:18px;border-radius:4px}
+.carousel-pause{
+  position:absolute;top:10px;right:10px;z-index:2;
+  width:28px;height:28px;border-radius:50%;
+  background:rgba(0,0,0,.35);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .3s;font-size:.7rem;color:#fff;
+}
+.card-carousel:hover .carousel-pause{opacity:1}
+
+/* ========== SECTION: about ========== */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.about-text p{color:var(--text-secondary);margin-bottom:16px;line-height:1.8;font-size:.95rem}
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+.stat-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:12px;
+  padding:18px;text-align:center;transition:all .3s;box-shadow:0 2px 8px var(--shadow);
+}
+.stat-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px var(--shadow)}
+.stat-number{font-size:1.6rem;font-weight:800;color:var(--accent)}
+.stat-label{font-size:.72rem;color:var(--text-muted);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+.about-details{display:flex;flex-direction:column;gap:16px}
+.detail-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px;transition:all .3s;box-shadow:0 2px 8px var(--shadow);
+}
+.detail-card:hover{box-shadow:0 6px 20px var(--shadow)}
+.detail-card h4{font-size:.82rem;color:var(--accent);font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:1.5px}
+.detail-card p,.detail-card li{color:var(--text-secondary);font-size:.9rem;line-height:1.7}
+.detail-card ul{list-style:none;padding:0}
+.detail-card li{padding:4px 0;padding-left:16px;position:relative}
+.detail-card li::before{content:'▸';position:absolute;left:0;color:var(--accent)}
+.skill-tags{display:flex;flex-wrap:wrap;gap:8px}
+.skill-tag{
+  padding:5px 13px;border-radius:20px;font-size:.78rem;font-weight:500;
+  background:rgba(193,127,89,.1);border:1px solid rgba(193,127,89,.18);color:var(--accent2);
+}
+
+/* ========== SECTION: experience ========== */
+.exp-timeline{position:relative;padding-left:40px}
+.exp-timeline::before{
+  content:'';position:absolute;left:14px;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--accent),var(--warm),transparent);
+}
+.exp-item{
+  position:relative;margin-bottom:48px;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:32px;transition:all .4s;box-shadow:0 2px 12px var(--shadow);
+}
+.exp-item:hover{box-shadow:0 8px 30px var(--shadow);transform:translateY(-2px)}
+.exp-item::before{
+  content:'';position:absolute;left:-33px;top:36px;
+  width:14px;height:14px;border-radius:50%;
+  background:var(--accent);border:3px solid var(--bg);
+  box-shadow:0 0 10px rgba(193,127,89,.3);
+}
+.exp-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.exp-company{font-size:1.15rem;font-weight:700;color:var(--text)}
+.exp-role{font-size:.9rem;color:var(--accent);font-weight:500}
+.exp-date{font-size:.78rem;color:var(--text-muted);background:rgba(193,127,89,.08);padding:4px 12px;border-radius:6px;font-weight:500}
+.exp-desc{list-style:none;padding:0}
+.exp-desc li{color:var(--text-secondary);font-size:.88rem;line-height:1.7;padding:5px 0 5px 20px;position:relative}
+.exp-desc li::before{content:'◆';position:absolute;left:0;color:var(--accent);font-size:.55rem;top:12px}
+.exp-gallery{
+  display:flex;gap:10px;margin-top:20px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory;
+}
+.exp-gallery::-webkit-scrollbar{height:4px}
+.exp-gallery::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+.exp-gallery-img{
+  flex-shrink:0;width:180px;height:135px;border-radius:10px;overflow:hidden;
+  scroll-snap-align:start;border:1px solid var(--border);transition:all .3s;
+}
+.exp-gallery-img:hover{transform:scale(1.03);box-shadow:0 4px 12px var(--shadow)}
+.exp-gallery-img img{width:100%;height:100%;object-fit:cover}
+
+/* ========== SECTION: leadership ========== */
+.lead-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:28px}
+.lead-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:all .4s;box-shadow:0 2px 12px var(--shadow);
+}
+.lead-card:hover{transform:translateY(-6px);box-shadow:0 12px 36px var(--shadow)}
+.lead-carousel{height:240px}
+.lead-info{padding:24px}
+.lead-role{font-size:.72rem;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.lead-title{font-size:1.05rem;font-weight:700;margin-bottom:12px;color:var(--text)}
+.lead-desc{color:var(--text-secondary);font-size:.86rem;line-height:1.7}
+.lead-learn{margin-top:16px;padding:14px;border-radius:10px;background:rgba(193,127,89,.06);border-left:3px solid var(--accent)}
+.lead-learn p{font-size:.8rem;color:var(--text-secondary);font-style:italic;line-height:1.6}
+
+/* ========== SECTION: competitions ========== */
+.comp-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:20px;
+  overflow:hidden;display:grid;grid-template-columns:1fr 1fr;
+  max-width:900px;margin:0 auto;transition:all .4s;box-shadow:0 2px 16px var(--shadow);
+}
+.comp-card:hover{box-shadow:0 12px 40px var(--shadow);transform:translateY(-3px)}
+.comp-visual{position:relative;overflow:hidden;min-height:350px}
+.comp-visual img{width:100%;height:100%;object-fit:cover}
+.comp-badge{
+  position:absolute;top:20px;right:20px;
+  background:linear-gradient(135deg,var(--gold),#e8b84d);color:#fff;
+  padding:8px 16px;border-radius:8px;font-size:.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:1px;box-shadow:0 4px 12px rgba(212,162,78,.3);
+}
+.comp-info{padding:40px;display:flex;flex-direction:column;justify-content:center}
+.comp-name{font-family:var(--font-display);font-size:1.3rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+.comp-subtitle{color:var(--accent);font-size:.88rem;font-weight:500;margin-bottom:16px}
+.comp-details{list-style:none;padding:0}
+.comp-details li{color:var(--text-secondary);font-size:.86rem;padding:6px 0;padding-left:20px;position:relative;line-height:1.6}
+.comp-details li::before{content:'★';position:absolute;left:0;color:var(--gold);font-size:.65rem;top:9px}
+
+/* ========== SECTION: networking ========== */
+.net-container{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.net-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:all .4s;box-shadow:0 2px 12px var(--shadow);
+}
+.net-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px var(--shadow)}
+.net-carousel{height:280px}
+.net-info{padding:24px}
+.net-tag{font-size:.72rem;color:var(--accent3);font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.net-title{font-size:1.05rem;font-weight:700;margin-bottom:12px;color:var(--text)}
+.net-desc{color:var(--text-secondary);font-size:.86rem;line-height:1.7}
+
+/* ========== SECTION: personal ========== */
+.personal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.personal-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:all .4s;box-shadow:0 2px 12px var(--shadow);
+}
+.personal-card:hover{transform:translateY(-6px);box-shadow:0 12px 36px var(--shadow)}
+.personal-carousel{height:260px}
+.personal-info{padding:24px}
+.personal-icon{font-size:1.8rem;margin-bottom:12px}
+.personal-title{font-size:1.05rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+.personal-desc{color:var(--text-secondary);font-size:.86rem;line-height:1.7}
+
+/* ========== SECTION: contact ========== */
+.contact-section{background:linear-gradient(180deg,var(--bg),var(--bg2));padding:80px 40px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:900px;margin:0 auto;align-items:center}
+.contact-text h3{font-family:var(--font-display);font-size:1.6rem;margin-bottom:16px;color:var(--text)}
+.contact-text p{color:var(--text-secondary);line-height:1.8;font-size:.93rem}
+.contact-links{display:flex;flex-direction:column;gap:12px}
+.contact-link{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:12px;transition:all .3s;box-shadow:0 1px 4px var(--shadow);
+}
+.contact-link:hover{transform:translateX(6px);box-shadow:0 4px 16px var(--shadow);border-color:var(--accent)}
+.contact-icon{
+  width:40px;height:40px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent),var(--warm));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;flex-shrink:0;color:#fff;
+}
+.contact-link-label{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px}
+.contact-link-value{font-size:.88rem;font-weight:500;margin-top:2px;color:var(--text)}
+
+/* ========== SECTION: footer ========== */
+.footer{text-align:center;padding:28px 40px;border-top:1px solid var(--border);font-size:.78rem;color:var(--text-muted)}
+
+/* ========== SECTION: animations ========== */
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* ========== SECTION: responsive ========== */
+@media(max-width:968px){
+  .hero-content{grid-template-columns:1fr;text-align:center}
+  .hero-portrait{order:-1}
+  .portrait-frame{width:220px;height:280px}
+  .hero-cta{justify-content:center}
+  .about-grid{grid-template-columns:1fr}
+  .comp-card{grid-template-columns:1fr}
+  .comp-visual{min-height:220px}
+  .net-container{grid-template-columns:1fr}
+  .personal-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .nav-links{
+    position:fixed;top:var(--nav-h);left:0;right:0;
+    background:rgba(250,246,241,.97);backdrop-filter:blur(20px);
+    flex-direction:column;padding:20px;gap:14px;
+    transform:translateY(-100%);opacity:0;transition:all .3s;
+    border-bottom:1px solid var(--border);
+  }
+  .nav-links.open{transform:translateY(0);opacity:1}
+  .nav-toggle{display:flex}
+  .lang-switch{margin-left:0;padding-left:0;border-left:none;justify-content:center}
+}
+@media(max-width:600px){
+  .section{padding:60px 20px}
+  .hero{padding:var(--nav-h) 20px 0}
+  .nav{padding:0 20px}
+  .about-stats{grid-template-columns:repeat(3,1fr);gap:8px}
+  .stat-card{padding:12px 6px}
+  .lead-grid{grid-template-columns:1fr}
+  .exp-timeline{padding-left:28px}
+}
+</style>
+</head>
+<body>
+
+<!-- ========== SECTION: navigation ========== -->
+<nav class="nav" id="nav">
+  <a href="#hero" class="nav-brand">Megan<span>.</span></a>
+  <div class="nav-toggle" id="navToggle" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <a href="#about" data-i18n="nav_about">About</a>
+    <a href="#experience" data-i18n="nav_experience">Experience</a>
+    <a href="#leadership" data-i18n="nav_leadership">Leadership</a>
+    <a href="#competitions" data-i18n="nav_competitions">Competitions</a>
+    <a href="#networking" data-i18n="nav_networking">Networking</a>
+    <a href="#personal" data-i18n="nav_personal">Personal</a>
+    <a href="#contact" data-i18n="nav_contact">Contact</a>
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('tc')">繁</button>
+      <button class="lang-btn" onclick="setLang('sc')">简</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== SECTION: hero ========== -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <p class="hero-greeting" data-i18n="hero_greeting">Hello, I'm</p>
+      <h1 class="hero-name">
+        Megan Wang
+        <span class="cn" data-i18n="hero_cn_name">王芊匀</span>
+      </h1>
+      <p class="hero-title" data-i18n="hero_title">BBA Student at CUHK · Business Analytics & Finance<br>Aspiring professional passionate about digital transformation, strategic thinking, and building meaningful connections.</p>
+      <div class="hero-cta">
+        <a href="#experience" class="btn btn-primary" data-i18n="hero_cta_explore">Explore My Journey</a>
+        <a href="#contact" class="btn btn-outline" data-i18n="hero_cta_contact">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-portrait">
+      <div class="portrait-wrap">
+        <div class="portrait-deco"></div>
+        <div class="portrait-frame">
+          <img src="images/portrait.jpg" alt="Megan Wang" onerror="this.parentElement.style.background='linear-gradient(135deg,#c17f59,#d4956b)';this.style.display='none'">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION: about ========== -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="section-tag" data-i18n="about_tag">Who I Am</p>
+      <h2 class="section-title" data-i18n="about_title">About Me</h2>
+      <p class="section-subtitle" data-i18n="about_subtitle">A curious mind driven by learning, leadership, and impact.</p>
+    </div>
+    <div class="about-grid">
+      <div class="fade-in-left">
+        <div class="about-text">
+          <p data-i18n="about_p1">I'm a first-year BBA student at the Chinese University of Hong Kong, concentrating in Business Analytics and Finance. Born in 2007, I bring energy, curiosity, and a relentless drive to everything I do.</p>
+          <p data-i18n="about_p2">From interning at Bank of China to leading a team in a global business challenge, I thrive in environments that push me to think critically, collaborate across cultures, and deliver tangible results.</p>
+          <p data-i18n="about_p3">Beyond academics, I'm a campus ambassador for two organizations, an avid runner, a published poet, and a passionate traveler — because I believe the best learning happens both inside and outside the classroom.</p>
+        </div>
+        <div class="about-stats">
+          <div class="stat-card"><div class="stat-number">3.23</div><div class="stat-label" data-i18n="about_stat1">GPA / 4.0</div></div>
+          <div class="stat-card"><div class="stat-number">3</div><div class="stat-label" data-i18n="about_stat2">Languages</div></div>
+          <div class="stat-card"><div class="stat-number">5+</div><div class="stat-label" data-i18n="about_stat3">Leadership Roles</div></div>
+        </div>
+      </div>
+      <div class="about-details fade-in-right">
+        <div class="detail-card">
+          <h4 data-i18n="about_edu_title">Education</h4>
+          <p><strong data-i18n="about_edu_school">The Chinese University of Hong Kong</strong></p>
+          <p data-i18n="about_edu_prog">Integrated BBA · Business Analytics & Finance</p>
+          <p style="font-size:.8rem;color:var(--text-muted)">Sep 2025 – Jul 2029 (Expected)</p>
+          <ul>
+            <li data-i18n="about_edu_c1">Microeconomics & Macroeconomics</li>
+            <li data-i18n="about_edu_c2">Business Process Analytics</li>
+            <li data-i18n="about_edu_c3">Basic Finance & Economics</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h4 data-i18n="about_skills_title">Skills</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Excel</span>
+            <span class="skill-tag">PowerPoint</span>
+            <span class="skill-tag">Data Analysis</span>
+            <span class="skill-tag">Canva</span>
+            <span class="skill-tag">Scrum</span>
+            <span class="skill-tag" data-i18n="about_skill_ba">Business Analytics</span>
+            <span class="skill-tag" data-i18n="about_skill_pres">Presentations</span>
+            <span class="skill-tag" data-i18n="about_skill_vid">Video Production</span>
+          </div>
+        </div>
+        <div class="detail-card">
+          <h4 data-i18n="about_lang_title">Languages</h4>
+          <div class="skill-tags">
+            <span class="skill-tag" data-i18n="about_lang_mandarin">Mandarin (Native)</span>
+            <span class="skill-tag" data-i18n="about_lang_cantonese">Cantonese (Native)</span>
+            <span class="skill-tag" data-i18n="about_lang_english">English (Fluent)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION: experience ========== -->
+<section class="section" id="experience" style="background:var(--bg2)">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="section-tag" data-i18n="exp_tag">Professional Growth</p>
+      <h2 class="section-title" data-i18n="exp_title">Work Experience</h2>
+      <p class="section-subtitle" data-i18n="exp_subtitle">Building real-world skills through internships in banking and finance.</p>
+    </div>
+    <div class="exp-timeline">
+      <!-- BOC -->
+      <div class="exp-item fade-in">
+        <div class="exp-header">
+          <div>
+            <div class="exp-company" data-i18n="exp_boc_company">Bank of China (Hong Kong)</div>
+            <div class="exp-role" data-i18n="exp_boc_role">IT Department — Business Analysis Intern</div>
+          </div>
+          <span class="exp-date">Jun – Jul 2026</span>
+        </div>
+        <ul class="exp-desc">
+          <li data-i18n="exp_boc_1">Attended training on corporate banking, financial markets, and banking digitalization, building a solid understanding of commercial banking operations.</li>
+          <li data-i18n="exp_boc_2">Participated in a digital transformation project, assisting with business requirement analysis, process optimization, and cross-departmental coordination.</li>
+          <li data-i18n="exp_boc_3">Supported webpage layout design, contributing to user interface optimization and content presentation improvements.</li>
+          <li data-i18n="exp_boc_4">Practiced Scrum agile project management through sprint planning and project meetings.</li>
+        </ul>
+        <div class="exp-gallery" id="bocGallery">
+          <div class="exp-gallery-img"><img src="images/boc-1.jpg" alt="BOC Internship 1" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+          <div class="exp-gallery-img"><img src="images/boc-2.jpg" alt="BOC Internship 2" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+          <div class="exp-gallery-img"><img src="images/boc-3.jpg" alt="BOC Internship 3" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+
+        </div>
+      </div>
+      <!-- AIA -->
+      <div class="exp-item fade-in">
+        <div class="exp-header">
+          <div>
+            <div class="exp-company" data-i18n="exp_aia_company">American International Assurance (AIA)</div>
+            <div class="exp-role" data-i18n="exp_aia_role">Financial Management Intern</div>
+          </div>
+          <span class="exp-date">Dec 2025</span>
+        </div>
+        <ul class="exp-desc">
+          <li data-i18n="exp_aia_1">Gained exposure to investment concepts including personal asset allocation and portfolio management fundamentals.</li>
+          <li data-i18n="exp_aia_2">Participated in personal financial planning analyses involving insurance, equity, and fixed-income products.</li>
+          <li data-i18n="exp_aia_3">Analyzed client cases and developed asset allocation recommendations to strengthen financial analytical skills.</li>
+          <li data-i18n="exp_aia_4">Attended industry training sessions to deepen understanding of wealth management practices.</li>
+        </ul>
+        <div class="exp-gallery">
+          <div class="exp-gallery-img"><img src="images/aia.jpg" alt="AIA Internship" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION: leadership ========== -->
+<section class="section" id="leadership">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="section-tag" data-i18n="lead_tag">Impact & Influence</p>
+      <h2 class="section-title" data-i18n="lead_title">Leadership & Campus Impact</h2>
+      <p class="section-subtitle" data-i18n="lead_subtitle">Taking initiative, building bridges, and making a difference on campus and beyond.</p>
+    </div>
+    <div class="lead-grid">
+      <!-- Campus Recruitment Ambassador -->
+      <div class="lead-card fade-in">
+        <div class="lead-carousel card-carousel" data-carousel="ambassador">
+          <div class="carousel-pause">⏸</div>
+          <div class="slides">
+            <div class="slide"><img src="images/career-fair.jpg" alt="Career Fair" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#e8a87c,#c17f59)'"></div>
+            <div class="slide"><img src="images/career-fair-mc.jpg" alt="Career Fair MC" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#e8a87c,#c17f59)'"></div>
+          </div>
+          <div class="carousel-dots"><div class="carousel-dot active"></div><div class="carousel-dot"></div></div>
+        </div>
+        <div class="lead-info">
+          <p class="lead-role" data-i18n="lead_amb_role">CUHK Campus Recruitment Ambassador</p>
+          <h3 class="lead-title" data-i18n="lead_amb_title">Bridging Students & Top Employers</h3>
+          <p class="lead-desc" data-i18n="lead_amb_desc">Assisting in career fairs, serving as MC for events with companies like L'Oréal China and Tencent, and networking with industry professionals to create meaningful connections between students and recruiters.</p>
+          <div class="lead-learn"><p data-i18n="lead_amb_learn">Key takeaway: Developed public speaking, event management, and professional networking skills through direct interaction with Fortune 500 companies.</p></div>
+        </div>
+      </div>
+      <!-- Mentorship -->
+      <div class="lead-card fade-in">
+        <div class="lead-carousel card-carousel" data-carousel="mentorship">
+          <div class="carousel-pause">⏸</div>
+          <div class="slides">
+            <div class="slide"><img src="images/mentorship-1.jpg" alt="Mentorship" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#e8a87c,#c17f59)'"></div>
+            <div class="slide"><img src="images/mentorship-2.jpg" alt="Mentorship Event" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#e8a87c,#c17f59)'"></div>
+            <div class="slide"><img src="images/mentorship-video.jpg" alt="Mentorship Video" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#e8a87c,#c17f59)'"></div>
+          </div>
+          <div class="carousel-dots"><div class="carousel-dot active"></div><div class="carousel-dot"></div><div class="carousel-dot"></div></div>
+        </div>
+        <div class="lead-info">
+          <p class="lead-role" data-i18n="lead_mentor_role">CUHK Business School Mentorship Programme</p>
+          <h3 class="lead-title" data-i18n="lead_mentor_title">Learning from Government Leadership</h3>
+          <p class="lead-desc" data-i18n="lead_mentor_desc">Paired with Mr. Percy from the HKSAR General Affairs Department as mentor-mentee. Invited to record a sharing video about my experience after the programme concluded.</p>
+          <div class="lead-learn"><p data-i18n="lead_mentor_learn">Key takeaway: Gained invaluable perspectives on public service and leadership from a senior government official, broadening my understanding of career paths beyond business.</p></div>
+        </div>
+      </div>
+      <!-- ICAC -->
+      <div class="lead-card fade-in">
+        <div class="lead-carousel card-carousel" data-carousel="icac">
+          <div class="carousel-pause">⏸</div>
+          <div class="slides">
+            <div class="slide"><img src="images/icac.jpg" alt="ICAC Ambassador" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#e8a87c,#c17f59)'"></div>
+          </div>
+          <div class="carousel-dots"><div class="carousel-dot active"></div></div>
+        </div>
+        <div class="lead-info">
+          <p class="lead-role" data-i18n="lead_icac_role">CUHK × ICAC Campus Ambassador</p>
+          <h3 class="lead-title" data-i18n="lead_icac_title">Promoting Integrity on Campus</h3>
+          <p class="lead-desc" data-i18n="lead_icac_desc">Handling the promotion role — designing posters, producing short videos, managing social media content, and running campus booths to engage students with ICAC's anti-corruption mission.</p>
+          <div class="lead-learn"><p data-i18n="lead_icac_learn">Key takeaway: Honed creative content production, social media marketing, and event coordination skills while contributing to an important social cause.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION: competitions ========== -->
+<section class="section" id="competitions" style="background:var(--bg2)">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="section-tag" data-i18n="comp_tag">Strategic Thinking</p>
+      <h2 class="section-title" data-i18n="comp_title">Case Competitions</h2>
+      <p class="section-subtitle" data-i18n="comp_subtitle">Applying analytical rigor and creative problem-solving to real business challenges.</p>
+    </div>
+    <div class="comp-card fade-in">
+      <div class="comp-visual">
+        <img src="images/cgma.jpg" alt="CGMA Competition" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#e8a87c,#c17f59)'">
+        <div class="comp-badge" data-i18n="comp_badge">Regional Finalist</div>
+      </div>
+      <div class="comp-info">
+        <h3 class="comp-name">CGMA Global Business Challenge 2026</h3>
+        <p class="comp-subtitle" data-i18n="comp_cgma_sub">Team Leader · HK Regional Finalists · Award of Commendation</p>
+        <ul class="comp-details">
+          <li data-i18n="comp_cgma_1">Led a team analyzing business opportunities and challenges arising from AI and digital transformation.</li>
+          <li data-i18n="comp_cgma_2">Evaluated financial metrics, operational performance, and market conditions to formulate strategic recommendations.</li>
+          <li data-i18n="comp_cgma_3">Conducted industry research and presented recommendations during the Regional Final competition.</li>
+          <li data-i18n="comp_cgma_4">Strengthened leadership, strategic thinking, and presentation skills through project execution and pitching.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION: networking ========== -->
+<section class="section" id="networking">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="section-tag" data-i18n="net_tag">Building Connections</p>
+      <h2 class="section-title" data-i18n="net_title">Networking & Professional Development</h2>
+      <p class="section-subtitle" data-i18n="net_subtitle">Engaging with industry leaders, entrepreneurs, and fellow professionals.</p>
+    </div>
+    <div class="net-container">
+      <!-- Wine -->
+      <div class="net-card fade-in">
+        <div class="net-carousel card-carousel" data-carousel="wine">
+          <div class="carousel-pause">⏸</div>
+          <div class="slides">
+            <div class="slide"><img src="images/wine-1.jpg" alt="Wine Tasting 1" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#e8a87c,#c17f59)'"></div>
+            <div class="slide"><img src="images/wine-2.jpg" alt="Wine Tasting 2" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#e8a87c,#c17f59)'"></div>
+            <div class="slide"><img src="images/wine-3.jpg" alt="Wine Tasting 3" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#e8a87c,#c17f59)'"></div>
+          </div>
+          <div class="carousel-dots"><div class="carousel-dot active"></div><div class="carousel-dot"></div><div class="carousel-dot"></div></div>
+        </div>
+        <div class="net-info">
+          <p class="net-tag" data-i18n="net_wine_tag">HKFBS Event</p>
+          <h3 class="net-title" data-i18n="net_wine_title">Wine Tasting Networking</h3>
+          <p class="net-desc" data-i18n="net_wine_desc">Connecting with a diverse range of professionals — from startup founders to seasoned business executives — in an elegant setting that fosters genuine conversation and relationship building.</p>
+        </div>
+      </div>
+      <!-- PwC -->
+      <div class="net-card fade-in">
+        <div class="net-carousel card-carousel" data-carousel="pwc">
+          <div class="carousel-pause">⏸</div>
+          <div class="slides">
+            <div class="slide"><img src="images/pwc-1.jpg" alt="PwC Consulting Day 1" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#e8a87c,#c17f59)'"></div>
+            <div class="slide"><img src="images/pwc-2.jpg" alt="PwC Consulting Day 2" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#e8a87c,#c17f59)'"></div>
+          </div>
+          <div class="carousel-dots"><div class="carousel-dot active"></div><div class="carousel-dot"></div></div>
+        </div>
+        <div class="net-info">
+          <p class="net-tag" data-i18n="net_pwc_tag">PwC Event</p>
+          <h3 class="net-title" data-i18n="net_pwc_title">PwC Consulting Day</h3>
+          <p class="net-desc" data-i18n="net_pwc_desc">Immersed in the consulting world through PwC's exclusive event, gaining insights into advisory practices, client engagement strategies, and the analytical frameworks that drive top-tier consulting.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION: personal ========== -->
+<section class="section" id="personal" style="background:var(--bg2)">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="section-tag" data-i18n="pers_tag">Beyond Work</p>
+      <h2 class="section-title" data-i18n="pers_title">Personal Side</h2>
+      <p class="section-subtitle" data-i18n="pers_subtitle">Because the best professionals are also well-rounded humans.</p>
+    </div>
+    <div class="personal-grid">
+      <!-- Fitness -->
+      <div class="personal-card fade-in">
+        <div class="personal-carousel card-carousel" data-carousel="gym">
+          <div class="slides">
+            <div class="slide" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f5ece0,#e8d5c0)">
+              <div style="text-align:center;padding:30px">
+                <div style="font-size:3.5rem;margin-bottom:12px">🏃‍♀️</div>
+                <div style="font-family:var(--font-display);font-size:1.3rem;font-weight:600;color:var(--accent2)" data-i18n="pers_gym_visual">Running is Meditation</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="personal-info">
+          <div class="personal-icon">💪</div>
+          <h3 class="personal-title" data-i18n="pers_gym_title">Fitness & Running</h3>
+          <p class="personal-desc" data-i18n="pers_gym_desc">Dedicated gym enthusiast with a special love for running. It's where I build discipline, clear my mind, and push past limits — one kilometer at a time.</p>
+        </div>
+      </div>
+      <!-- Poetry -->
+      <div class="personal-card fade-in">
+        <div class="personal-carousel card-carousel" data-carousel="poetry">
+          <div class="carousel-pause">⏸</div>
+          <div class="slides">
+            <div class="slide"><img src="images/poetry.jpg" alt="Poetry" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#f5ece0,#e8d5c0)'"></div>
+          </div>
+        </div>
+        <div class="personal-info">
+          <div class="personal-icon">✍️</div>
+          <h3 class="personal-title" data-i18n="pers_poetry_title">Poetry & Writing</h3>
+          <p class="personal-desc" data-i18n="pers_poetry_desc">Words are my canvas. I write poetry to capture emotions, observations, and the subtle beauty of everyday life — a creative counterbalance to the analytical world of business.</p>
+        </div>
+      </div>
+      <!-- Travel -->
+      <div class="personal-card fade-in">
+        <div class="personal-carousel card-carousel" data-carousel="travel">
+          <div class="carousel-pause">⏸</div>
+          <div class="slides">
+            <div class="slide"><img src="images/travel-1.jpg" alt="Travel 1" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#f5ece0,#e8d5c0)'"></div>
+            <div class="slide"><img src="images/travel-2.jpg" alt="Travel 2" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#f5ece0,#e8d5c0)'"></div>
+            <div class="slide"><img src="images/travel-3.jpg" alt="Travel 3" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#f5ece0,#e8d5c0)'"></div>
+            <div class="slide"><img src="images/travel-4.jpg" alt="Travel 4" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#f5ece0,#e8d5c0)'"></div>
+            <div class="slide"><img src="images/travel-5.jpg" alt="Travel 5" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#f5ece0,#e8d5c0)'"></div>
+          </div>
+          <div class="carousel-dots"><div class="carousel-dot active"></div><div class="carousel-dot"></div><div class="carousel-dot"></div><div class="carousel-dot"></div><div class="carousel-dot"></div></div>
+        </div>
+        <div class="personal-info">
+          <div class="personal-icon">✈️</div>
+          <h3 class="personal-title" data-i18n="pers_travel_title">Travel & Exploration</h3>
+          <p class="personal-desc" data-i18n="pers_travel_desc">Every journey teaches something new. I love immersing myself in different cultures, cuisines, and perspectives — broadening my worldview one destination at a time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION: contact ========== -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="section-tag" data-i18n="contact_tag">Let's Connect</p>
+      <h2 class="section-title" data-i18n="contact_title">Get in Touch</h2>
+    </div>
+    <div class="contact-grid fade-in">
+      <div class="contact-text">
+        <h3 data-i18n="contact_heading">I'd love to hear from you</h3>
+        <p data-i18n="contact_desc">Whether it's an internship opportunity, a collaboration idea, or just a friendly chat — I'm always open to connecting with like-minded professionals.</p>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:wqy93053070@gmail.com" class="contact-link">
+          <div class="contact-icon">📧</div>
+          <div><div class="contact-link-label">Email</div><div class="contact-link-value">wqy93053070@gmail.com</div></div>
+        </a>
+        <a href="tel:+85293053070" class="contact-link">
+          <div class="contact-icon">📱</div>
+          <div><div class="contact-link-label" data-i18n="contact_hk">Hong Kong</div><div class="contact-link-value">+852 9305 3070</div></div>
+        </a>
+        <a href="tel:+8617744969736" class="contact-link">
+          <div class="contact-icon">📞</div>
+          <div><div class="contact-link-label" data-i18n="contact_cn">Mainland China</div><div class="contact-link-value">+86 177 4496 9736</div></div>
+        </a>
+        <a href="https://linkedin.com/in/qianyun-wang" target="_blank" class="contact-link">
+          <div class="contact-icon">💼</div>
+          <div><div class="contact-link-label">LinkedIn</div><div class="contact-link-value">linkedin.com/in/qianyun-wang</div></div>
+        </a>
+        <a href="https://instagram.com/q.shen.929" target="_blank" class="contact-link">
+          <div class="contact-icon">📸</div>
+          <div><div class="contact-link-label">Instagram</div><div class="contact-link-value">@q.shen.929</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION: footer ========== -->
+<footer class="footer">
+  <p>&copy; 2026 Megan Wang · <span data-i18n="footer_text">Built with passion and purpose</span></p>
+</footer>
+
+<!-- ========== SECTION: javascript ========== -->
+<script>
+/* ===== LANGUAGE DATA ===== */
+var i18n={
+en:{nav_about:"About",nav_experience:"Experience",nav_leadership:"Leadership",nav_competitions:"Competitions",nav_networking:"Networking",nav_personal:"Personal",nav_contact:"Contact",hero_greeting:"Hello, I'm",hero_cn_name:"王芊匀",hero_title:"BBA Student at CUHK · Business Analytics & Finance<br>Aspiring professional passionate about digital transformation, strategic thinking, and building meaningful connections.",hero_cta_explore:"Explore My Journey",hero_cta_contact:"Get in Touch",about_tag:"Who I Am",about_title:"About Me",about_subtitle:"A curious mind driven by learning, leadership, and impact.",about_p1:"I'm a first-year BBA student at the Chinese University of Hong Kong, concentrating in Business Analytics and Finance. Born in 2007, I bring energy, curiosity, and a relentless drive to everything I do.",about_p2:"From interning at Bank of China to leading a team in a global business challenge, I thrive in environments that push me to think critically, collaborate across cultures, and deliver tangible results.",about_p3:"Beyond academics, I'm a campus ambassador for two organizations, an avid runner, a published poet, and a passionate traveler — because I believe the best learning happens both inside and outside the classroom.",about_stat1:"GPA / 4.0",about_stat2:"Languages",about_stat3:"Leadership Roles",about_edu_title:"Education",about_edu_school:"The Chinese University of Hong Kong",about_edu_prog:"Integrated BBA · Business Analytics & Finance",about_edu_c1:"Microeconomics & Macroeconomics",about_edu_c2:"Business Process Analytics",about_edu_c3:"Basic Finance & Economics",about_skills_title:"Skills",about_skill_ba:"Business Analytics",about_skill_pres:"Presentations",about_skill_vid:"Video Production",about_lang_title:"Languages",about_lang_mandarin:"Mandarin (Native)",about_lang_cantonese:"Cantonese (Native)",about_lang_english:"English (Fluent)",exp_tag:"Professional Growth",exp_title:"Work Experience",exp_subtitle:"Building real-world skills through internships in banking and finance.",exp_boc_company:"Bank of China (Hong Kong)",exp_boc_role:"IT Department — Business Analysis Intern",exp_boc_1:"Attended training on corporate banking, financial markets, and banking digitalization, building a solid understanding of commercial banking operations.",exp_boc_2:"Participated in a digital transformation project, assisting with business requirement analysis, process optimization, and cross-departmental coordination.",exp_boc_3:"Supported webpage layout design, contributing to user interface optimization and content presentation improvements.",exp_boc_4:"Practiced Scrum agile project management through sprint planning and project meetings.",exp_aia_company:"American International Assurance (AIA)",exp_aia_role:"Financial Management Intern",exp_aia_1:"Gained exposure to investment concepts including personal asset allocation and portfolio management fundamentals.",exp_aia_2:"Participated in personal financial planning analyses involving insurance, equity, and fixed-income products.",exp_aia_3:"Analyzed client cases and developed asset allocation recommendations to strengthen financial analytical skills.",exp_aia_4:"Attended industry training sessions to deepen understanding of wealth management practices.",lead_tag:"Impact & Influence",lead_title:"Leadership & Campus Impact",lead_subtitle:"Taking initiative, building bridges, and making a difference on campus and beyond.",lead_amb_role:"CUHK Campus Recruitment Ambassador",lead_amb_title:"Bridging Students & Top Employers",lead_amb_desc:"Assisting in career fairs, serving as MC for events with companies like L'Oréal China and Tencent, and networking with industry professionals to create meaningful connections between students and recruiters.",lead_amb_learn:"Key takeaway: Developed public speaking, event management, and professional networking skills through direct interaction with Fortune 500 companies.",lead_mentor_role:"CUHK Business School Mentorship Programme",lead_mentor_title:"Learning from Government Leadership",lead_mentor_desc:"Paired with Mr. Percy from the HKSAR General Affairs Department as mentor-mentee. Invited to record a sharing video about my experience after the programme concluded.",lead_mentor_learn:"Key takeaway: Gained invaluable perspectives on public service and leadership from a senior government official, broadening my understanding of career paths beyond business.",lead_icac_role:"CUHK × ICAC Campus Ambassador",lead_icac_title:"Promoting Integrity on Campus",lead_icac_desc:"Handling the promotion role — designing posters, producing short videos, managing social media content, and running campus booths to engage students with ICAC's anti-corruption mission.",lead_icac_learn:"Key takeaway: Honed creative content production, social media marketing, and event coordination skills while contributing to an important social cause.",comp_tag:"Strategic Thinking",comp_title:"Case Competitions",comp_subtitle:"Applying analytical rigor and creative problem-solving to real business challenges.",comp_badge:"Regional Finalist",comp_cgma_sub:"Team Leader · HK Regional Finalists · Award of Commendation",comp_cgma_1:"Led a team analyzing business opportunities and challenges arising from AI and digital transformation.",comp_cgma_2:"Evaluated financial metrics, operational performance, and market conditions to formulate strategic recommendations.",comp_cgma_3:"Conducted industry research and presented recommendations during the Regional Final competition.",comp_cgma_4:"Strengthened leadership, strategic thinking, and presentation skills through project execution and pitching.",net_tag:"Building Connections",net_title:"Networking & Professional Development",net_subtitle:"Engaging with industry leaders, entrepreneurs, and fellow professionals.",net_wine_tag:"HKFBS Event",net_wine_title:"Wine Tasting Networking",net_wine_desc:"Connecting with a diverse range of professionals — from startup founders to seasoned business executives — in an elegant setting that fosters genuine conversation and relationship building.",net_pwc_tag:"PwC Event",net_pwc_title:"PwC Consulting Day",net_pwc_desc:"Immersed in the consulting world through PwC's exclusive event, gaining insights into advisory practices, client engagement strategies, and the analytical frameworks that drive top-tier consulting.",pers_tag:"Beyond Work",pers_title:"Personal Side",pers_subtitle:"Because the best professionals are also well-rounded humans.",pers_gym_visual:"Running is Meditation",pers_gym_title:"Fitness & Running",pers_gym_desc:"Dedicated gym enthusiast with a special love for running. It's where I build discipline, clear my mind, and push past limits — one kilometer at a time.",pers_poetry_title:"Poetry & Writing",pers_poetry_desc:"Words are my canvas. I write poetry to capture emotions, observations, and the subtle beauty of everyday life — a creative counterbalance to the analytical world of business.",pers_travel_title:"Travel & Exploration",pers_travel_desc:"Every journey teaches something new. I love immersing myself in different cultures, cuisines, and perspectives — broadening my worldview one destination at a time.",contact_tag:"Let's Connect",contact_title:"Get in Touch",contact_heading:"I'd love to hear from you",contact_desc:"Whether it's an internship opportunity, a collaboration idea, or just a friendly chat — I'm always open to connecting with like-minded professionals.",contact_hk:"Hong Kong",contact_cn:"Mainland China",footer_text:"Built with passion and purpose"},
+tc:{nav_about:"關於我",nav_experience:"實習經歷",nav_leadership:"校園經歷",nav_competitions:"商業競賽",nav_networking:"人脈拓展",nav_personal:"個人興趣",nav_contact:"聯繫方式",hero_greeting:"你好，我是",hero_cn_name:"王芊匀",hero_title:"香港中文大學工商管理學士 · 商業分析與金融<br>熱愛數位轉型、策略思考與建立有意義的人際連結。",hero_cta_explore:"探索我的旅程",hero_cta_contact:"聯繫我",about_tag:"關於我",about_title:"自我介紹",about_subtitle:"一顆充滿好奇心、追求學習與影響力的心靈。",about_p1:"我是香港中文大學工商管理一年級學生，專修商業分析與金融。2007年出生的我，帶著活力、好奇心和不懈的驅動力投入每一件事。",about_p2:"從中國銀行實習到帶領團隊參加全球商業挑戰賽，我在需要批判性思考、跨文化協作和創造實際成果的領域中茁壯成長。",about_p3:"在學業之外，我擔任兩個組織的校園大使、熱衷跑步、熱愛寫詩和旅遊——因為我相信最好的學習發生在課堂內外。",about_stat1:"GPA / 4.0",about_stat2:"語言能力",about_stat3:"領導角色",about_edu_title:"教育背景",about_edu_school:"香港中文大學",about_edu_prog:"工商管理組合課程 · 商業分析與金融",about_edu_c1:"微觀經濟學與宏觀經濟學",about_edu_c2:"商業流程分析",about_edu_c3:"基礎金融與經濟學",about_skills_title:"專業技能",about_skill_ba:"商業分析",about_skill_pres:"商務演示",about_skill_vid:"影片製作",about_lang_title:"語言能力",about_lang_mandarin:"普通話（母語）",about_lang_cantonese:"粵語（母語）",about_lang_english:"英語（流利）",exp_tag:"專業成長",exp_title:"實習經歷",exp_subtitle:"透過銀行與金融領域的實習建構實務能力。",exp_boc_company:"中國銀行（香港）",exp_boc_role:"資訊科技部 — 商業分析實習生",exp_boc_1:"參加企業銀行、金融市場及銀行數位化轉型培訓，建立對商業銀行運營及資本市場知識的理解。",exp_boc_2:"參與銀行數位化轉型項目，協助開展業務需求分析、流程優化及跨部門溝通協調。",exp_boc_3:"支援網頁版面設計，協助用戶介面優化及內容呈現改善。",exp_boc_4:"透過項目例會及Sprint規劃，學習並實踐Scrum敏捷項目管理方法。",exp_aia_company:"友邦保險（AIA）",exp_aia_role:"金融管理實習生",exp_aia_1:"學習投資組合管理及財富管理基礎理論，培養金融市場認知及投資分析思維。",exp_aia_2:"參與個人財務規劃及資產配置分析，了解保險、股票及固定收益類產品的特點。",exp_aia_3:"研究客戶案例並提出資產配置建議框架，提升金融分析及商業表達能力。",exp_aia_4:"透過行業交流及培訓活動，加深對財富管理業務模式的理解。",lead_tag:"影響力與領導力",lead_title:"校園經歷與影響力",lead_subtitle:"主動擔當、搭建橋樑、在校園內外創造改變。",lead_amb_role:"CUHK 校園招聘大使",lead_amb_title:"連結學生與頂尖企業",lead_amb_desc:"協助職業博覽會，擔任歐萊雅中國、騰訊等企業活動的主持人，與行業專業人士建立有意義的連結。",lead_amb_learn:"核心收穫：透過與世界五百強企業的直接互動，培養了公眾演講、活動管理和專業社交能力。",lead_mentor_role:"CUHK 商學院師友計劃",lead_mentor_title:"向政府領導層學習",lead_mentor_desc:"與香港特區政府總務處的 Percy 配對為師友。計劃結束後受邀錄製心得分享影片。",lead_mentor_learn:"核心收穫：從資深政府官員身上獲得公共服務與領導力的寶貴見解，拓展了對商業以外職業道路的認知。",lead_icac_role:"CUHK × 廉政公署校園大使",lead_icac_title:"在校園推廣誠信",lead_icac_desc:"負責宣傳工作——設計海報、製作短片、管理社交媒體內容，以及運營校園攤位以推廣廉政公署的反貪使命。",lead_icac_learn:"核心收穫：磨練了創意內容製作、社交媒體營銷和活動統籌能力，同時為重要的社會事業貢獻力量。",comp_tag:"策略思維",comp_title:"商業競賽",comp_subtitle:"將分析嚴謹性與創意解題能力應用於真實商業挑戰。",comp_badge:"地區決賽入圍",comp_cgma_sub:"團隊隊長 · 香港地區決賽入圍者 · 表彰獎",comp_cgma_1:"帶領團隊分析AI及數位轉型背景下企業商業模式面臨的機遇與挑戰。",comp_cgma_2:"結合財務指標、運營表現及市場環境，評估業務增長及組織優化方案。",comp_cgma_3:"開展行業研究並在地區決賽中進行路演展示。",comp_cgma_4:"透過項目執行和路演提升了領導力、策略思維和演講能力。",net_tag:"建立連結",net_title:"人脈拓展與專業發展",net_subtitle:"與業界領袖、創業家及專業人士交流互動。",net_wine_tag:"HKFBS 活動",net_wine_title:"紅酒品鑑社交活動",net_wine_desc:"在優雅的氛圍中與來自不同領域的專業人士交流——從初創企業創辦人到經驗豐富的企業高管，促進真誠的對話與人際關係建立。",net_pwc_tag:"PwC 活動",net_pwc_title:"PwC 諮詢日",net_pwc_desc:"透過PwC的專屬活動深入了解諮詢行業，學習顧問實務、客戶參與策略及驅動頂級諮詢業務的分析框架。",pers_tag:"工作之外",pers_title:"個人興趣",pers_subtitle:"因為最優秀的專業人士也是全面發展的人。",pers_gym_visual:"跑步即冥想",pers_gym_title:"健身與跑步",pers_gym_desc:"熱愛健身，尤其鍾情跑步。這是我培養自律、沉澱思緒、突破極限的方式——一公里又一公里。",pers_poetry_title:"詩歌與寫作",pers_poetry_desc:"文字是我的畫布。我用詩歌捕捉情感、觀察和日常生活中的微妙之美——為商業分析的世界提供創意平衡。",pers_travel_title:"旅遊與探索",pers_travel_desc:"每段旅程都有新的啟發。我熱愛沉浸在不同的文化、美食和視角中——一個目的地一個目的地地拓展世界觀。",contact_tag:"聯繫我",contact_title:"取得聯繫",contact_heading:"期待與你交流",contact_desc:"無論是實習機會、合作想法還是友好的交談——我隨時歡迎與志同道合的專業人士建立聯繫。",contact_hk:"中國香港",contact_cn:"中國大陸",footer_text:"以熱情與目標打造"},
+sc:{nav_about:"关于我",nav_experience:"实习经历",nav_leadership:"校园经历",nav_competitions:"商业竞赛",nav_networking:"人脉拓展",nav_personal:"个人兴趣",nav_contact:"联系方式",hero_greeting:"你好，我是",hero_cn_name:"王芊匀",hero_title:"香港中文大学工商管理学士 · 商业分析与金融<br>热爱数字化转型、战略思考与建立有意义的人际联结。",hero_cta_explore:"探索我的旅程",hero_cta_contact:"联系我",about_tag:"关于我",about_title:"自我介绍",about_subtitle:"一颗充满好奇心、追求学习与影响力的心灵。",about_p1:"我是香港中文大学工商管理一年级学生，专修商业分析与金融。2007年出生的我，带着活力、好奇心和不懈的驱动力投入每一件事。",about_p2:"从中国银行实习到带领团队参加全球商业挑战赛，我在需要批判性思考、跨文化协作和创造实际成果的领域中茁壮成长。",about_p3:"在学业之外，我担任两个组织的校园大使、热衷跑步、热爱写诗和旅游——因为我相信最好的学习发生在课堂内外。",about_stat1:"GPA / 4.0",about_stat2:"语言能力",about_stat3:"领导角色",about_edu_title:"教育背景",about_edu_school:"香港中文大学",about_edu_prog:"工商管理组合课程 · 商业分析与金融",about_edu_c1:"微观经济学与宏观经济学",about_edu_c2:"商业流程分析",about_edu_c3:"基础金融与经济学",about_skills_title:"专业技能",about_skill_ba:"商业分析",about_skill_pres:"商务演示",about_skill_vid:"视频制作",about_lang_title:"语言能力",about_lang_mandarin:"普通话（母语）",about_lang_cantonese:"粤语（母语）",about_lang_english:"英语（流利）",exp_tag:"专业成长",exp_title:"实习经历",exp_subtitle:"通过银行与金融领域的实习建构实务能力。",exp_boc_company:"中国银行（香港）",exp_boc_role:"资讯科技部 — 商业分析实习生",exp_boc_1:"参加企业银行、金融市场及银行数字化转型培训，建立对商业银行运营及资本市场知识的理解。",exp_boc_2:"参与银行数字化转型项目，协助开展业务需求分析、流程优化及跨部门沟通协调。",exp_boc_3:"支持网页版面设计，协助用户界面优化及内容呈现改善。",exp_boc_4:"通过项目例会及Sprint规划，学习并实践Scrum敏捷项目管理方法。",exp_aia_company:"友邦保险（AIA）",exp_aia_role:"金融管理实习生",exp_aia_1:"学习投资组合管理及财富管理基础理论，培养金融市场认知及投资分析思维。",exp_aia_2:"参与个人财务规划及资产配置分析，了解保险、股票及固定收益类产品的特点。",exp_aia_3:"研究客户案例并提出资产配置建议框架，提升金融分析及商业表达能力。",exp_aia_4:"通过行业交流及培训活动，加深对财富管理业务模式的理解。",lead_tag:"影响力与领导力",lead_title:"校园经历与影响力",lead_subtitle:"主动担当、搭建桥梁、在校园内外创造改变。",lead_amb_role:"CUHK 校园招聘大使",lead_amb_title:"连接学生与顶尖企业",lead_amb_desc:"协助职业博览会，担任欧莱雅中国、腾讯等企业活动的主持人，与行业专业人士建立有意义的联结。",lead_amb_learn:"核心收获：通过与世界五百强企业的直接互动，培养了公众演讲、活动管理和专业社交能力。",lead_mentor_role:"CUHK 商学院师友计划",lead_mentor_title:"向政府领导层学习",lead_mentor_desc:"与香港特区政府总务处的 Percy 配对为师友。计划结束后受邀录制心得分享视频。",lead_mentor_learn:"核心收获：从资深政府官员身上获得公共服务与领导力的宝贵见解，拓展了对商业以外职业道路的认知。",lead_icac_role:"CUHK × 廉政公署校园大使",lead_icac_title:"在校园推广诚信",lead_icac_desc:"负责宣传工作——设计海报、制作短片、管理社交媒体内容，以及运营校园摊位以推广廉政公署的反贪使命。",lead_icac_learn:"核心收获：磨练了创意内容制作、社交媒体营销和活动统筹能力，同时为重要的社会事业贡献力量。",comp_tag:"战略思维",comp_title:"商业竞赛",comp_subtitle:"将分析严谨性与创意解题能力应用于真实商业挑战。",comp_badge:"地区决赛入围",comp_cgma_sub:"团队队长 · 香港地区决赛入围者 · 表彰奖",comp_cgma_1:"带领团队分析AI及数字化转型背景下企业商业模式面临的机遇与挑战。",comp_cgma_2:"结合财务指标、运营表现及市场环境，评估业务增长及组织优化方案。",comp_cgma_3:"开展行业研究并在地区决赛中进行路演展示。",comp_cgma_4:"通过项目执行和路演提升了领导力、战略思维和演讲能力。",net_tag:"建立联结",net_title:"人脉拓展与专业发展",net_subtitle:"与业界领袖、创业者及专业人士交流互动。",net_wine_tag:"HKFBS 活动",net_wine_title:"红酒品鉴社交活动",net_wine_desc:"在优雅的氛围中与来自不同领域的专业人士交流——从初创企业创始人到经验丰富的企业高管，促进真诚的对话与人际关系建立。",net_pwc_tag:"PwC 活动",net_pwc_title:"PwC 咨询日",net_pwc_desc:"通过PwC的专属活动深入了解咨询行业，学习顾问实务、客户参与策略及驱动顶级咨询业务的分析框架。",pers_tag:"工作之外",pers_title:"个人兴趣",pers_subtitle:"因为最优秀的专业人士也是全面发展的人。",pers_gym_visual:"跑步即冥想",pers_gym_title:"健身与跑步",pers_gym_desc:"热爱健身，尤其钟情跑步。这是我培养自律、沉淀思绪、突破极限的方式——一公里又一公里。",pers_poetry_title:"诗歌与写作",pers_poetry_desc:"文字是我的画布。我用诗歌捕捉情感、观察和日常生活中的微妙之美——为商业分析的世界提供创意平衡。",pers_travel_title:"旅游与探索",pers_travel_desc:"每段旅程都有新的启发。我热爱沉浸在不同的文化、美食和视角中——一个目的地一个目的地地拓展世界观。",contact_tag:"联系我",contact_title:"取得联系",contact_heading:"期待与你交流",contact_desc:"无论是实习机会、合作想法还是友好的交谈——我随时欢迎与志同道合的专业人士建立联系。",contact_hk:"中国香港",contact_cn:"中国大陆",footer_text:"以热情与目标打造"}
+};
+var currentLang='en';
+function setLang(lang){
+  currentLang=lang;
+  document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active',b.textContent.trim()==={en:'EN',tc:'繁',sc:'简'}[lang])});
+  document.documentElement.lang=lang==='en'?'en':'zh';
+  var data=i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');if(data[k])el.innerHTML=data[k]});
+}
+
+/* ===== NAV ===== */
+window.addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
+function toggleNav(){document.getElementById('navLinks').classList.toggle('open')}
+document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('navLinks').classList.remove('open')})});
+
+/* ===== FADE IN ===== */
+var fadeObs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');fadeObs.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-in,.fade-in-left,.fade-in-right').forEach(function(el){fadeObs.observe(el)});
+
+/* ===== CAROUSEL (auto-advance in card, click to pause/resume) ===== */
+document.querySelectorAll('.card-carousel').forEach(function(carousel){
+  var slides=carousel.querySelector('.slides');
+  var dots=carousel.querySelectorAll('.carousel-dot');
+  var pauseBtn=carousel.querySelector('.carousel-pause');
+  var total=slides.children.length;
+  if(total<=1)return;
+  var current=0;
+  var paused=false;
+  var interval=null;
+  function go(idx){
+    current=idx%total;
+    slides.style.transform='translateX(-'+current*100+'%)';
+    dots.forEach(function(d,i){d.classList.toggle('active',i===current)});
+  }
+  function startAuto(){
+    if(interval)clearInterval(interval);
+    interval=setInterval(function(){go(current+1)},4000);
+  }
+  function stopAuto(){if(interval){clearInterval(interval);interval=null}}
+  dots.forEach(function(d,i){d.addEventListener('click',function(e){e.stopPropagation();go(i);stopAuto();paused=true;if(pauseBtn)pauseBtn.textContent='▶'})});
+  if(pauseBtn){
+    pauseBtn.addEventListener('click',function(e){
+      e.stopPropagation();
+      paused=!paused;
+      if(paused){stopAuto();pauseBtn.textContent='▶'}else{startAuto();pauseBtn.textContent='⏸'}
+    });
+  }
+  carousel.addEventListener('click',function(){
+    paused=!paused;
+    if(paused){stopAuto();if(pauseBtn)pauseBtn.textContent='▶'}else{startAuto();if(pauseBtn)pauseBtn.textContent='⏸'}
+  });
+  startAuto();
+});
+
+/* ===== EXPERIENCE GALLERY AUTO-SCROLL (horizontal within card) ===== */
+document.querySelectorAll('.exp-gallery').forEach(function(g){
+  var imgs=g.querySelectorAll('.exp-gallery-img');
+  if(imgs.length<=1)return;
+  var idx=0;
+  setInterval(function(){idx=(idx+1)%imgs.length;imgs[idx].scrollIntoView({behavior:'smooth',block:'nearest',inline:'start'})},3500);
+});
+</script>
+</body>
+</html>
